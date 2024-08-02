@@ -1,7 +1,7 @@
 name: Assign Milestone on Close
 
 env:
-  MILESTONE_ID: 80
+  MILESTONE_ID: 1
 
 on:
   issues:
