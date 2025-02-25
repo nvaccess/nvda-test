@@ -1,0 +1,36 @@
+name: Monitor Localisation File Changes
+
+on:
+  push:
+    branches:
+      - beta
+      - devGuideTranslatingSyms
+    paths:
+      - 'source/locale/en/*.dic'
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Get the diff
+      id: git_diff
+      run: |
+        git fetch origin
+        # Get the diff from the push
+        git diff -U0 ${{github.event.before}}..${{github.event.after}} -- source/locale/en/*.dic | grep '^[+-]'
+
+    - name: Send email
+      uses: dawidd6/action-send-mail@v4
+      with:
+        server_address: smtp.example.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: "Changes detected in localisation files"
+        to: nvda-l10n@nvaccess.org
+        from: nvda-l10n@nvaccess.org
+        html_body: file://.github/workflows/email-localisation-file-changes.md
