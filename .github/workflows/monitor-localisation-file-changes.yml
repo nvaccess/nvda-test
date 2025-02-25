@@ -28,7 +28,7 @@ jobs:
       with:
         server_address: smtp.gmail.com
         server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
+        username: ${{ env.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: "Changes detected in localisation files"
         to: sean@nvaccess.org  # nvda-l10n@nvaccess.org
